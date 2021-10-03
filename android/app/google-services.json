@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "215881098039",
+    "project_id": "call-me-cabs-fadaf",
+    "storage_bucket": "call-me-cabs-fadaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:215881098039:android:758825256f731027cff0b2",
+        "android_client_info": {
+          "package_name": "com.digibranding.callmecabs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "215881098039-kvme5nsckqtb20ddfehcbfh7lfqpg77b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.digibranding.callmecabs",
+            "certificate_hash": "b83215ccd52202a4c5bdaf691f5add7d261ffa53"
+          }
+        },
+        {
+          "client_id": "215881098039-5p0vdln3sh58e0169c6o41nnm7b7rdv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpQkwThXLPSacWQVLAdcPYYBfkJetV1A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "215881098039-5p0vdln3sh58e0169c6o41nnm7b7rdv1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

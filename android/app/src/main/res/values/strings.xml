@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Call Me Cabs</string>
+    <string name="fb_app_id">{FB_APP_ID}</string>
+    <string name="maps_api_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDhIioyeLK_2jYbUprYP4gm0fc5oogav6Q</string>
+    <string name="fb_login_protocol_scheme">fb{FB_APP_ID}</string>
+</resources>

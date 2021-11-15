@@ -25,6 +25,8 @@ const screenwidth = Dimensions.get('window').width;
 
 class PickupLocation extends React.Component{
 
+    location = [];
+
     constructor(props) {
         super(props);
         this.map = React.createRef<MapView>(null);
@@ -37,10 +39,12 @@ class PickupLocation extends React.Component{
                 latitudeDelta: 0.015,
                 longitudeDelta: 0.0121,
             },
-            userlocation : {latitude : 7.50015162585, longitude : 80.3325495607}
+            userlocation : {latitude : 7.50015162585, longitude : 80.3325495607},
+            selectedlocation : []
         };
         this.goback = this.goback.bind(this);
         this.setloactiononmap = this.setloactiononmap.bind(this);
+        this.getselectedlocation = this.getselectedlocation.bind(this);
     }
 
     handleCenter = () => {
@@ -57,7 +61,6 @@ class PickupLocation extends React.Component{
     componentDidMount(){
         console.log('focused')
         this.getCurrentLocation();
-       
     }
 
     getCurrentLocation(){
@@ -67,7 +70,6 @@ class PickupLocation extends React.Component{
                 let regioncoords = {latitude : position.coords.latitude, longitude : position.coords.longitude, latitudeDelta: 0.015, longitudeDelta: 0.0121};
                 this.setState({userlocation : usercoords});
                 this.setState({userlocation : regioncoords});
-                console.log(regioncoords)
             },
             (error) => {
               console.log(error.code, error.message);
@@ -77,7 +79,7 @@ class PickupLocation extends React.Component{
     }
 
     onRegionChangecomplete(result){
-        console.log(result)
+        this.location = result;
     }
 
     componentDidUpdate(){
@@ -88,6 +90,10 @@ class PickupLocation extends React.Component{
         this.props.goback(state);
     }
 
+    getselectedlocation(location){
+        this.props.getselectedlocation(location);
+    }
+
     setloactiononmap(state){
         this.props.setloactiononmap(state);
     }
@@ -95,7 +101,7 @@ class PickupLocation extends React.Component{
     render(){
         return(
             <View>
-            {this.props.setlocationmapvisible ?
+            {this.props.setpickuplocationmapvisible ?
                 <Animated.View style={[styles.container]}>
                     <TouchableOpacity onPress={()=>this.goback(false)} style={[styles.mapbackbuttoncontainer]}>
                         <Icon name={'arrow-back-outline'} size={25}/>
@@ -120,8 +126,8 @@ class PickupLocation extends React.Component{
                     </MapView>
                     <Icon name={'pin'} size={50} style={{position : 'absolute', zIndex : 100, marginBottom : 10}}/>
                     <View style={[styles.confirmbutton]}>
-                                <Button title={Languages.Confirm}/>
-                        </View>
+                        <Button title={Languages.Confirm} action={()=>(this.getselectedlocation(this.location), this.goback(false))}/>
+                    </View>
                     
                 </Animated.View>:null}
             </View>
@@ -133,6 +139,7 @@ class PickupLocation extends React.Component{
 PickupLocation.propTypes = {
     goback: PropTypes.func,
     setloactiononmap: PropTypes.func,
+    getselectedlocation: PropTypes.func
 };
 
 export default PickupLocation;

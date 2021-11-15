@@ -16,6 +16,20 @@ const styles = StyleSheet.create({
         width: '95%',
         height : 50,
         backgroundColor : Colors.black
+    },
+    locationfetchcompleted : {
+        position : 'absolute', 
+        top : 20, 
+        zIndex : 100, 
+        width : '100%', 
+        backgroundColor: 'transparent'
+    },
+    locationfetchincompleted : {
+        position : 'absolute', 
+        bottom : 50, 
+        zIndex : 100, 
+        width : '100%', 
+        backgroundColor: 'transparent'
     }
 })
 

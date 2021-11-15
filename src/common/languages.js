@@ -18,6 +18,7 @@ export default {
     Continue : 'Continue',
     Confirm : 'Confirm',
     PleaseWait : 'Please Wait',
+    LoadingPleaseWait : 'Loading Please Wait...',
     Error : 'Error',
     Alert :'Alert',
     Yes : 'Yes',
@@ -26,6 +27,11 @@ export default {
     Settings : 'Settings',
     Hi : 'Hi',
     Rs : 'Rs.',
+    SomethingwentWrong : 'Something went wrong, Please try again later',
+    Retry : 'Retry',
+    Next : 'Next',
+    Km : 'Km',
+    Done : 'Done',
 
     //Login Page
     Login : 'Login',
@@ -36,12 +42,31 @@ export default {
     Register : 'Register',
     ShowHidePassword : 'Show password',
     UseOtherMethods : 'Use Other Login Methods',
+    UserLogged : 'User Logged Successfully',
+    AccountCreated : 'Account Created',
+    EmailAlready : 'This Email Has Already Registered',
+    PlayServices : 'Play services not available or outdated',
+    LoginFailed : 'Login failed',
+    InvalidUserName : 'Invalid username or password',
 
     // Home page 
     EnterPickupLocation : 'Enter Pickup Location',
     EnterDropLocation : 'Enter Drop Location',
     Enter : 'Enter',
     PickupPoint : 'Pickup Point',
+    DropPoint : 'Drop Point',
     SetLocationOnMap : 'Set Location On Map',
-    RecentSearch : 'Recent Search'
+    RecentSearch : 'Recent Search',
+
+    // Confirm Ride Page 
+    PaymentMethod : 'Payment Method',
+    Cash : 'Cash',
+    Card : 'Card',
+    CashPayment : 'Cash Payment',
+    CardPayment : 'Card Payment',
+    AddNote : 'Add Note',
+    SelectPaymentMethod : 'Select Payment Method',
+    AddNote : 'Add Note',
+    AddNoteHere : 'Add Note Here',
+    SetNote : 'Set Note'
 }

@@ -10,7 +10,8 @@ import {
   Text,
   Dimensions,
   View,
-  Animated
+  Animated,
+  PermissionsAndroid
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
@@ -24,6 +25,7 @@ const Splash =() => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    requestLocationPermission();
     SharedPreferences.getItem('logged', (logged) => {
       console.log(logged)
       if(logged == 1){
@@ -37,6 +39,21 @@ const Splash =() => {
       }
     })
   }, []);
+
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use location");
+      } else {
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
 
   return(
     <View style={[styles.container]}>

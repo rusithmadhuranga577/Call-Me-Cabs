@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     subtitle : {
         fontFamily : Constants.light, 
         fontSize : 15,
-        width : '95%'
+        alignSelf : 'center'
     },
     textinputviewrow : {
         flexDirection : 'row',

@@ -4,6 +4,7 @@ const colors = {
     pagebggray : '#f1f1f1',
     white : '#fff',
     black : '#000',
+    matteblack : '#3d3d3d',
     gray : '#E6E9ED',
     darkgray : '#6f6f6f',
     green : '#28a745',

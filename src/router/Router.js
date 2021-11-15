@@ -11,6 +11,7 @@ import {Splash} from '@screens';
 import {Login} from '@screens';
 import {CreateNewAccount} from '@screens';
 import {Home} from '@screens';
+import {ConfirmRide} from '@screens';
 
 const Stack = createStackNavigator();
 
@@ -32,8 +33,8 @@ function App() {
         headerBackTitleVisible: false,
         animationEnabled : true,
         animationTypeForReplace : 'push',
-        gestureEnabled: true,
-        ...TransitionPresets.RevealFromBottomAndroid ,
+        animationEnabled : true,
+        ...TransitionPresets.SlideFromRightIOS ,
         headerTitleStyle : {fontFamily : Constants.bold, fontSize : 17},
         headerBackImage: ()=>(<Back/>)
       }}
@@ -42,6 +43,7 @@ function App() {
         <Stack.Screen name="Login" component={Login} options={{headerShown : false}}/>
         <Stack.Screen name="CreateNewAccount" component={CreateNewAccount} options={{headerShown : true}}/>
         <Stack.Screen name="Home" component={Home} options={{headerShown : false}}/>
+        <Stack.Screen name="ConfirmRide" component={ConfirmRide} options={{headerShown : false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

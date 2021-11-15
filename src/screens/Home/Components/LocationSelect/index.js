@@ -18,6 +18,7 @@ class LocationSelect extends React.Component {
             droplocation : []
         };
         this.getpickuplocationbuttonstate = this.getpickuplocationbuttonstate.bind(this);
+        this.getdroplocationbuttonstate = this.getdroplocationbuttonstate.bind(this);
     }
 
     componentDidMount(){
@@ -29,26 +30,35 @@ class LocationSelect extends React.Component {
 
     setpickuplocationbuttonstate(state){
         this.setState({pickupcontainerstate : state});
-         this.getpickuplocationbuttonstate(state);
+        this.getpickuplocationbuttonstate(state);
     }
 
     getpickuplocationbuttonstate(state){
         this.props.getpickuplocationbuttonstate(state);
     }
 
-    renderlocationselectcontainer(){
+    setdroplocationbuttonstate(state){
+        this.setState({pickupcontainerstate : state});
+        this.getdroplocationbuttonstate(state);
+    }
+
+    getdroplocationbuttonstate(state){
+        this.props.getdroplocationbuttonstate(state);
+    }
+
+    renderlocationselectcontainer(pickupaddress, dropaddress){
         return(
             <View style={[styles.container]}>
                 <TouchableOpacity onPress={()=>this.setpickuplocationbuttonstate(true)} activeOpacity={0.9} style={[styles.pickuplocationcontainer]}>
                     <View style={{flexDirection : 'row', alignItems : 'center'}}>
                         <View style={[styles.dot ,{backgroundColor : Colors.green}]}/>
-                        <Text style={[styles.placeholdertext]}>{Languages.EnterPickupLocation}</Text>
+                        <Text style={[styles.placeholdertext]}>{pickupaddress == '' ? Languages.EnterPickupLocation : pickupaddress}</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.9} style={[styles.droplocationcontainer]}>
+                <TouchableOpacity onPress={()=>this.setdroplocationbuttonstate(true)} activeOpacity={0.9} style={[styles.droplocationcontainer]}>
                     <View style={{flexDirection : 'row', alignItems : 'center'}}>
                         <View style={[styles.dot ,{backgroundColor : Colors.red}]}/>
-                        <Text style={[styles.placeholdertext]}>{Languages.EnterDropLocation}</Text>
+                        <Text style={[styles.placeholdertext]}>{dropaddress == '' ? Languages.EnterDropLocation : dropaddress}</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -56,9 +66,11 @@ class LocationSelect extends React.Component {
     }
 
     render(){
+        let pickupaddress = this.props.pickupaddress;
+        let dropaddress = this.props.dropaddress;
         return(
             <View>
-                {this.state.showcontainer ? this.renderlocationselectcontainer() : null}
+                {this.state.showcontainer ? this.renderlocationselectcontainer(pickupaddress, dropaddress) : null}
             </View>
         );
     }

@@ -17,6 +17,7 @@ import {
   View,
 } from 'react-native';
 import Router from './src/router/Router';
+import FlashMessage from "react-native-flash-message";
 
 const App = () => {
 
@@ -29,6 +30,7 @@ const App = () => {
   return (
     <>
       <Router/>
+      <FlashMessage position="top" />
     </>
   );
 };

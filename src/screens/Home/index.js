@@ -30,7 +30,6 @@ const Home =() => {
   return(
     <View style={[styles.container]}>
       <Map/>
-      
     </View>
   );
 }

@@ -29,10 +29,12 @@ import firebase from "@react-native-firebase/app";
 import { useIsFocused } from '@react-navigation/native';
 import axios from 'axios';
 import styles from './styles';
+import SocialLogin from './sociallogin';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Images, Languages, Constants, Colors, Icons, Url } from '@common';
-import { Button } from '@components';
+import { Button, LoadingComponent, CustomAlert, CustomAlertButton } from '@components';
 import { useNavigation } from '@react-navigation/native';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const screenwidth = Dimensions.get('screen').width;
 
@@ -45,7 +47,10 @@ var SharedPreferences = require('react-native-shared-preferences');
   const [email, setemail] = useState('');
   const [password, setpassword] = useState('');
   const [passwordvisible, setpasswordvisible] = useState(false);
+  const [loginfailed, setloginfailed] = useState(false);
   const isFocused = useIsFocused();
+
+  const [loading, setloading] = useState(false);
 
   const rightitemsposition = useRef(new Animated.Value(200)).current;
   const titlepsition = useRef(new Animated.Value(-200)).current;
@@ -66,9 +71,8 @@ var SharedPreferences = require('react-native-shared-preferences');
     }).start();
   };
 
-  const isDarkMode = useColorScheme() === 'dark';
-
   const LoginFunction = () => {
+    setloading(true);
     axios.post(Url.loginurl, 
       QueryString.stringify({
         email : email,
@@ -85,36 +89,36 @@ var SharedPreferences = require('react-native-shared-preferences');
           SharedPreferences.setItem('lname', response.data.l_name);
           SharedPreferences.setItem('userphoto', response.data.photo);
           SharedPreferences.setItem('userid', response.data.customer_id);
-          SharedPreferences.setItem('userid', response.data.Kurunegala);
+          SharedPreferences.setItem('city', response.data.city);
 
           const fullname = `${response.data.f_name} ${response.data.l_name}`;
           SharedPreferences.setItem('username', fullname);
           SharedPreferences.setItem('logged', 1+'');
+          showMessage({
+            message: Languages.UserLogged,
+            type: "success",
+            icon : 'success',
+            duration : 2500
+          });
+          navigation.push('Home')
+          setloading(false);
+        }else{
+          setloading(false);
+          setloginfailed(true);
         }
     }).catch(err =>  (console.log(err)))
   }
 
-  const SocialLogin = () => {
-    return(
-      <View style={[styles.sociallogincontainer]}>
-        <Text numberOfLines={3} style={[styles.subtitle, {fontFamily : Constants.medium}]}>{Languages.UseOtherMethods}</Text>
-          <View style={{alignSelf : 'center', flexDirection : 'row', marginTop : 10}}>
-            <Image source={Icons.GoogleLoginIcon} style={[styles.socialloginicon]}/>
-            <Image source={Icons.FacebookLoginIcon} style={[styles.socialloginicon, {marginLeft : 30}]}/>
-          </View>
-      </View>
-    );
-  }
-
    return (
      <View>
+      <LoadingComponent visibility={loading}/>
       <View style={[styles.container]}>
         <Animated.Image source={Images.LoginVector} style={[styles.vector, {transform: [{translateX: rightitemsposition}]}]}/>
         <Animated.View style={{transform: [{translateX: titlepsition}], width : '100%'}}>
           <Text numberOfLines={3} style={[styles.title]}>{Languages.Login}</Text>
         </Animated.View>
         <Animated.View style={{transform: [{translateX: titlepsition}], width : '100%'}}>
-          <Text numberOfLines={3} style={[styles.subtitle]}>{Languages.LoginPageSubTitle}</Text>
+          <Text numberOfLines={3} style={[styles.subtitle, {alignSelf : 'flex-start'}]}>{Languages.LoginPageSubTitle}</Text>
         </Animated.View>
 
           <View style={{width : '100%',}}>
@@ -162,10 +166,23 @@ var SharedPreferences = require('react-native-shared-preferences');
             <Button action={LoginFunction} title={Languages.Login}/>
           </View>
           <Text numberOfLines={3} style={[styles.registertext]}>{Languages.DontHaveAnAccount} <Text onPress={()=>navigation.push('CreateNewAccount')} style={[styles.registerclicktext]}>{Languages.Register}</Text></Text>
-          <View style={{alignSelf : 'center'}}>
+          <View style={{alignSelf : 'center', width : '100%'}}>
            <SocialLogin/>
           </View>
       </View>
+      <CustomAlert
+        displayMode={'alert'}
+        displayMsg={Languages.InvalidUserName}
+        displaymsgtitle={Languages.LoginFailed}
+        visibility={loginfailed}
+        dismissAlert={setloginfailed}
+        cancellable={true}
+        buttons={(
+          <>
+            <CustomAlertButton buttontitle={Languages.Retry} theme={'alert'} buttonaction={()=>setloginfailed(false)}/>
+          </>
+        )}
+      />
      </View>
    );
  };

@@ -15,12 +15,15 @@ import {
   LogBox 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import styles from './styles';
 import { Images, Languages, Constants, Colors, Store, Url } from '@common';
 import { Button, LoadingComponent, CustomAlert, CustomAlertButton } from '@components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from '@react-native-community/checkbox';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
+const QueryString = require('query-string');
 var SharedPreferences = require('react-native-shared-preferences');
 
 const CreateNewAccount =() => {
@@ -34,9 +37,56 @@ const CreateNewAccount =() => {
   const [confirmpassword, setconfirmpassword] = useState('');
 
   const [loading, setloading] = useState(false);
-  const [passwordvisible, setpasswordvisible] = useState(true);
+  const [passwordvisible, setpasswordvisible] = useState(false);
   const [fieldsemptylert, setfieldsemptylert] = useState(false);
   const [erroralert, seterroralert] = useState(false);
+
+  const CreateUserFunction = () => {
+    setloading(true);
+    axios.post(Url.newaccounturl, 
+      QueryString.stringify({
+        fname : fname,
+        lname : lname,
+        authtype : 'EmailPassword',
+        email : email,
+        password : password,
+        mobile : phone,
+        firebaseauthid : null,
+        authemail : null,
+      }), 
+      {
+        headers: {"Content-Type": "application/x-www-form-urlencoded",}
+      }).then(response => {
+        console.log(response.data);
+        if(response.data.status == 1){
+          setloading(false);
+          SharedPreferences.setItem('email', email);
+          SharedPreferences.setItem('phonenumber', phone);
+          SharedPreferences.setItem('fname', fname);
+          SharedPreferences.setItem('lname', lname);
+          SharedPreferences.setItem('userphoto', response.data.profilephoto);
+          SharedPreferences.setItem('userid', response.data.id+'');
+
+          const fullname = `${fname} ${lname}`;
+          SharedPreferences.setItem('username', fullname);
+          SharedPreferences.setItem('logged', 1+'');
+          showMessage({
+            message: Languages.AccountCreated,
+            type: "success",
+            icon : 'success',
+            duration : 2500
+          });
+        }else if(response.data.status == 2){
+          showMessage({
+            message: Languages.EmailAlready,
+            type: "danger",
+            icon : 'danger',
+            duration : 2500
+          });
+          setloading(false)
+        }
+    }).catch(err =>  (setloading(false)));
+  }
 
   return(
     <View>
@@ -112,7 +162,7 @@ const CreateNewAccount =() => {
             </View>
             <TextInput 
                 value={password}
-                secureTextEntry={passwordvisible}
+                secureTextEntry={!passwordvisible}
                 onChangeText={input => setpassword(input)}
                 style={[styles.input]}
                 placeholderTextColor={'rgba(0,0,0,0.4)'}
@@ -128,7 +178,7 @@ const CreateNewAccount =() => {
             </View>
             <TextInput 
                 value={confirmpassword}
-                secureTextEntry={passwordvisible}
+                secureTextEntry={!passwordvisible}
                 onChangeText={input => setconfirmpassword(input)}
                 style={[styles.input]}
                 placeholderTextColor={'rgba(0,0,0,0.4)'}
@@ -148,7 +198,7 @@ const CreateNewAccount =() => {
           
           <View style={{marginTop: 20, marginBottom: 20, alignSelf : 'center', width : '100%'}}>
             {/* <Button title={Languages.Update} action={()=>navigation.navigate('LocationSettings', {logged : 0})}/> */}
-            <Button title={Languages.Update} />
+            <Button title={Languages.Update} action={CreateUserFunction}/>
           </View>
 
           {/* Alerts */}

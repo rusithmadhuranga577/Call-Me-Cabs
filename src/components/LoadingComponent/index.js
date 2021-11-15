@@ -4,9 +4,11 @@ import React, { useEffect, useState, useRef  } from 'react';
 import { connect } from "react-redux";
 import {
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Text
 } from 'react-native';
 import styles from './styles';
+import axios from 'axios';
 import { Images, Languages, Countries } from '@common';
 import { Colors, Constants, Icons } from '@common';
 import { Button } from '@components';
@@ -22,7 +24,10 @@ export default function LoadingComponent({
       <>
         {visibility ? 
             <View style={[styles.overlay]}>
-                <ActivityIndicator size={80} color={Colors.white} />
+                <View style={[styles.indicatorholder]}>
+                  <ActivityIndicator size={40} color={Colors.white} />
+                  <Text style={[styles.text]}>{Languages.LoadingPleaseWait}</Text>
+                </View>
             </View>:null
         }
       </>

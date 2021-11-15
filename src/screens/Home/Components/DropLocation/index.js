@@ -28,7 +28,7 @@ class PickupLocation extends React.Component{
             backstate : false
         };
         this.goback = this.goback.bind(this);
-        this.setpickuploactiononmap = this.setpickuploactiononmap.bind(this);
+        this.setloactiononmap = this.setloactiononmap.bind(this);
     }
 
     animateIn = () => {
@@ -59,10 +59,10 @@ class PickupLocation extends React.Component{
         this.props.goback(state);
     }
 
-    setpickuploactiononmap(state){
+    setloactiononmap(state){
         this.goback(false);
         setTimeout(() => {
-            this.props.setpickuploactiononmap(state);
+            this.props.setloactiononmap(state);
         }, 500);
     }
 
@@ -72,9 +72,9 @@ class PickupLocation extends React.Component{
                 <Animated.View style={[styles.container, {transform: [{translateY : this.state.containerheight}]}]}>
                     <View style={[styles.topcard]}>
                         <Icon name={'arrow-back-outline'} size={30} style={{margin : 10}} color={Colors.primary} onPress={()=>this.goback(false)}/>
-                        <Text style={[styles.pagetitle, {color : Colors.black}]}>{Languages.Enter} <Text  style={[styles.pagetitle]}>{Languages.PickupPoint}</Text></Text>
+                        <Text style={[styles.pagetitle, {color : Colors.black}]}>{Languages.Enter} <Text  style={[styles.pagetitle]}>{Languages.DropPoint}</Text></Text>
                     </View>
-                    <SetLocationMap onpress={()=>this.setpickuploactiononmap(true)}/>
+                    <SetLocationMap onpress={()=>this.setloactiononmap(true)}/>
                     <View style={[styles.recentsearchcard]}>
                         <Text style={[styles.recentsearchtext]}>{Languages.RecentSearch}</Text>
                     </View>

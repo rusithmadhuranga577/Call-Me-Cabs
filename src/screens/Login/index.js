@@ -57,6 +57,7 @@ var SharedPreferences = require('react-native-shared-preferences');
  
    useEffect(()=>{
     imagein();
+    setloading(false);
    }, [isFocused])
 
   const imagein = () => {
@@ -81,17 +82,18 @@ var SharedPreferences = require('react-native-shared-preferences');
       {
         headers: {"Content-Type": "application/x-www-form-urlencoded",}
       }).then(response => {
-        console.log(response.data.status);
+        setloading(false);
         if(response.data.status == 1){
-          SharedPreferences.setItem('email', response.data.email);
-          SharedPreferences.setItem('phonenumber', response.data.phonenumber);
-          SharedPreferences.setItem('fname', response.data.f_name);
-          SharedPreferences.setItem('lname', response.data.l_name);
-          SharedPreferences.setItem('userphoto', response.data.photo);
-          SharedPreferences.setItem('userid', response.data.customer_id);
-          SharedPreferences.setItem('city', response.data.city);
+          const userdata = response.data.data[0]
+          SharedPreferences.setItem('email', userdata.email);
+          SharedPreferences.setItem('phonenumber', userdata.phonenumber);
+          SharedPreferences.setItem('fname', userdata.f_name);
+          SharedPreferences.setItem('lname', userdata.l_name);
+          SharedPreferences.setItem('userphoto', userdata.photo);
+          SharedPreferences.setItem('userid', userdata.customer_id);
+          SharedPreferences.setItem('city', userdata.city);
 
-          const fullname = `${response.data.f_name} ${response.data.l_name}`;
+          const fullname = `${userdata.f_name} ${userdata.l_name}`;
           SharedPreferences.setItem('username', fullname);
           SharedPreferences.setItem('logged', 1+'');
           showMessage({

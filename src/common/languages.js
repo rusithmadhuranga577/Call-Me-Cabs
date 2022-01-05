@@ -32,6 +32,12 @@ export default {
     Next : 'Next',
     Km : 'Km',
     Done : 'Done',
+    Clear : 'Clear',
+
+    // Alert Text
+    ClearRecentSearche : 'Clear recent search list ?',
+    PleaseSelectCabType : 'Please select a cab type for continue',
+    NoCabType : 'No cab type',
 
     //Login Page
     Login : 'Login',

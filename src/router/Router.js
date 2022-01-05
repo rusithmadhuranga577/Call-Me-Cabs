@@ -12,6 +12,7 @@ import {Login} from '@screens';
 import {CreateNewAccount} from '@screens';
 import {Home} from '@screens';
 import {ConfirmRide} from '@screens';
+import {WaitingForDriver} from '@screens';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ function App() {
         <Stack.Screen name="CreateNewAccount" component={CreateNewAccount} options={{headerShown : true}}/>
         <Stack.Screen name="Home" component={Home} options={{headerShown : false}}/>
         <Stack.Screen name="ConfirmRide" component={ConfirmRide} options={{headerShown : false}}/>
+        <Stack.Screen name="WaitingForDriver" component={WaitingForDriver} options={{headerShown : false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

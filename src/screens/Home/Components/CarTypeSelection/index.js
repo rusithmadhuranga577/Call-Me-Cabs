@@ -8,7 +8,7 @@ import {getDistance, getPreciseDistance} from 'geolib';
 import Icon from "react-native-vector-icons/Ionicons";
 
 import {Business, Icons, Languages, Colors, Url} from '@common';
-import { Button } from '@components';
+import { Button, CustomAlert, CustomAlertButton  } from '@components';
 import styles from "./styles";
 
 class CarTypeSelection extends React.Component {
@@ -23,7 +23,8 @@ class CarTypeSelection extends React.Component {
             selectedcartypeid : null,
             totalchargeforride : 0,
             locationdata : [],
-            selectedcabdata : []
+            selectedcabdata : [],
+            nocabmodelalert : false
         };
         this.getSelectedCar = this.getSelectedCar.bind(this);
     }
@@ -84,8 +85,23 @@ class CarTypeSelection extends React.Component {
     nextFunction=()=>{
         const { navigation } = this.props;
         const locationpoindata = this.props.state;
-        console.log(locationpoindata)
-        navigation.navigate('ConfirmRide', {locationdata : locationpoindata, cabtypedata : this.state.selectedcabdata, totalcharge : this.state.totalchargeforride, distance : this.state.selectedlocationdistance});
+        const selectedcabdata = this.state.selectedcabdata;
+        console.log(selectedcabdata == '')
+        
+        if(selectedcabdata == ''){
+            this.openNoCabAlert();
+        }else{
+            navigation.navigate('ConfirmRide', {locationdata : locationpoindata, cabtypedata : this.state.selectedcabdata, totalcharge : this.state.totalchargeforride, distance : this.state.selectedlocationdistance});
+        }
+        // navigation.navigate('ConfirmRide', {locationdata : locationpoindata, cabtypedata : this.state.selectedcabdata, totalcharge : this.state.totalchargeforride, distance : this.state.selectedlocationdistance});
+    }
+
+    closeNoCablAert=()=>{
+        this.setState({nocabmodelalert : false});
+    }
+
+    openNoCabAlert=()=>{
+        this.setState({nocabmodelalert : true});
     }
 
     render(){
@@ -101,6 +117,21 @@ class CarTypeSelection extends React.Component {
                 <View style={[styles.buttonholder]}>
                     <Button title={Languages.Next} action={this.nextFunction}/>
                 </View>
+
+                {/* Clear Recent Search alert */}
+                <CustomAlert
+                    displayMode={'alert'}
+                    displayMsg={Languages.PleaseSelectCabType}
+                    displaymsgtitle={Languages.NoCabType}
+                    visibility={this.state.nocabmodelalert}
+                    dismissAlert={this.closeNoCablAert}
+                    cancellable={true}
+                    buttons={(
+                    <>
+                        <CustomAlertButton buttontitle={Languages.Ok} theme={'inverse'} buttonaction={this.closeNoCablAert}/>
+                    </>
+                    )}
+                />
             </View>
         );
     }

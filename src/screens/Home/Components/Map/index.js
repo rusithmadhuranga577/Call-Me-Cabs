@@ -112,17 +112,18 @@ class Map extends React.Component {
                     pickupvisible={this.state.pikuplocationcontainerstate} 
                     goback={(state)=>this.setState({pikuplocationcontainerstate : state})}
                     setpickuploactiononmap={(state)=>this.setState({setpickuplocationmapvisible : state})}
+                    getselectedlocation={(location)=>this.setpickuplocation(location)}
                 />
                 <SetPickupLocationOnMap
                     setpickuplocationmapvisible={this.state.setpickuplocationmapvisible} 
                     goback={(state)=>this.setState({setpickuplocationmapvisible : state})}
                     getselectedlocation={(location)=>this.setpickuplocation(location)}
                 />
-
                 <DropLocation 
                     pickupvisible={this.state.droplocationcontainerstate} 
                     goback={(state)=>this.setState({droplocationcontainerstate : state})}
                     setloactiononmap={(state)=>this.setState({setdroplocationmapvisible : state})}
+                    getselectedlocation={(location)=>this.setdroplocation(location)}
                 />
                 <SetDropLocationOnMap
                     setdroplocationmapvisible={this.state.setdroplocationmapvisible} 

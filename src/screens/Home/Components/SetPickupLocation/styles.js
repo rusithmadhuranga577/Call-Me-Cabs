@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
         justifyContent : 'center',
         position : 'absolute',
         bottom : 25,
-        zIndex : 99}
+        zIndex : 99
+    },
 })
 
 export default styles;

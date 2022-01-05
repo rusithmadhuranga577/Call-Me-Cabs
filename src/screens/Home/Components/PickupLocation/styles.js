@@ -47,12 +47,35 @@ const styles = StyleSheet.create({
         width : '100%', 
         backgroundColor : Colors.white, 
         marginTop : 15,
-        padding : 10
+        padding : 10,
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+        alignItems : 'center'
     },
     recentsearchtext : {
         fontFamily : Constants.light,
         fontSize : 15,
         color : Colors.black,
+    },
+    recentsearchitem : {
+        width : '100%',
+        padding : 15,
+        backgroundColor : Colors.white,
+        flexDirection : 'row',
+        alignItems : 'center',
+        marginTop : 10,
+        alignSelf : 'center',
+    },
+    recentsearchtext : {
+        fontFamily : Constants.medium,
+        color : Colors.black,
+        marginLeft : 15
+    },
+    cleartext : {
+        fontFamily : Constants.bold,
+        color : 'red',
+        marginLeft : 15,
+        fontSize : 10
     }
 })
 

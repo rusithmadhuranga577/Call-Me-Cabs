@@ -3,18 +3,23 @@ import {View, TouchableOpacity, Text, Dimensions, Image} from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Geolocation from 'react-native-geolocation-service';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 import MapViewDirections from 'react-native-maps-directions';
 
-import {Business, Icons, Languages, Colors} from '@common';
+import {Business, Icons, Languages, Url} from '@common';
 import Geocoder from 'react-native-geocoding';
 import { Button } from '@components';
 import PaymentMethodSelector from "./Components/PaymentMethodSelect/index";
 import AddNote from "./Components/AddNote/index";
 import styles from "./styles";
 
+const QueryString = require('query-string');
 Geocoder.init(Business.mapsapi);
 const height = Dimensions.get('screen').height;
-const bottom = height/3
+const bottom = height/3;
+var SharedPreferences = require('react-native-shared-preferences');
 
 class ConfirmRide extends React.Component {
 
@@ -42,8 +47,50 @@ class ConfirmRide extends React.Component {
     }
 
     confirmFunction=()=>{
-        console.log(this.props.route.params);
-        console.log(this.state);
+        const rideinfo = this.props.route.params;
+        SharedPreferences.getItem('userid', (id)=>{
+            console.log(id)
+        const ridedata = [{
+                customers_id : id,
+                cab_type_id : rideinfo.cabtypedata.cab_model_id,
+                start_point_address : rideinfo.locationdata.pickuplocationaddress,
+                start_point_lat : rideinfo.locationdata.pickuplocation.latitude,
+                start_point_lan : rideinfo.locationdata.pickuplocation.longitude,
+                destination_address : rideinfo.locationdata.droplocationaddress,
+                destination_lat : rideinfo.locationdata.droplocation.latitude,
+                destination_lan : rideinfo.locationdata.droplocation.longitude,
+                distance : rideinfo.distance,
+                charge_for_distance : rideinfo.totalcharge,
+                payment_methods_id : this.state.paymentmethod,
+                ride_status : 0,
+                driver_id : 0
+            }]
+            axios.post(Url.createnewrideurl, 
+            QueryString.stringify(
+                ridedata[0],
+            ), 
+            {
+                headers: {"Content-Type": "application/x-www-form-urlencoded",}
+            }).then(response => {
+                const ride_id = response.data.rideId;
+                console.log(response.data);
+                this.SetFirebaseData(ridedata[0], ride_id);
+            }).catch(err =>  (console.log(err)))
+        });
+    }
+
+    SetFirebaseData = (ridedata, ride_id) => {
+        const {navigation} = this.props;
+        firestore()
+        .collection('cab_rides')
+        .doc(ride_id.toString())
+        .set(
+            ridedata
+        )
+        .then(() => {
+            console.log('ride added')
+            navigation.push('WaitingForDriver', {ride_id : ride_id, ride_data : ridedata});
+        });
     }
 
     closePaymentMethodSelector=()=>{
@@ -149,13 +196,16 @@ class ConfirmRide extends React.Component {
                     </View>
                 </View>
                 {this.state.paymentmethodselector ?
-                <PaymentMethodSelector defstate={this.state.paymentmethod} closePopup={(state)=>state ? this.closePaymentMethodSelector() : null} getPaymentMethod={(data)=>this.setState({paymentmethod : data.id})}/>
+                    <PaymentMethodSelector defstate={this.state.paymentmethod} closePopup={(state)=>state ? this.closePaymentMethodSelector() : null} getPaymentMethod={(data)=>this.setState({paymentmethod : data.id})}/>
                 :null}
                 {this.state.addnotecontainer ?
-                <AddNote closePopup={(state)=>state ? this.setState({addnotecontainer : false}) : null} setnote={(data)=>this.setState({note : data})}/>
+                    <AddNote closePopup={(state)=>state ? this.setState({addnotecontainer : false}) : null} setnote={(data)=>this.setState({note : data})}/>
                 :null}
             </View>
         );
     }
 }
-export default ConfirmRide
+export default function(props){
+    const navigation = useNavigation();
+    return <ConfirmRide {...props} navigation={navigation} />;
+} 
